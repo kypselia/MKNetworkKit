@@ -314,6 +314,15 @@
 -(void) emptyCache;
 
 /*!
+ *  @abstract Enables or disables caching.  
+ *  @property cacheEnabled
+ *
+ *  @discussion
+ *	Setting cacheEnabled to YES has the same effect as calling useCache. Defaults to NO.
+ */
+@property(nonatomic, assign) BOOL cacheEnabled;
+
+/*!
  *  @abstract Checks current reachable status
  *  
  *  @discussion

@@ -34,7 +34,9 @@
 #error MKNetworkKit is ARC only. Either turn on ARC for the project or use -fobjc-arc flag
 #endif
 
-@interface MKNetworkEngine (/*Private Methods*/)
+@interface MKNetworkEngine (/*Private Methods*/) {
+    BOOL cacheEnabled_; 
+}
 
 @property (strong, nonatomic) NSString *hostName;
 @property (strong, nonatomic) Reachability *reachability;
@@ -130,6 +132,8 @@ static NSOperationQueue *_sharedNetworkQueue;
     }    
     
     self.customOperationSubclass = [MKNetworkOperation class];
+
+    cacheEnabled_ = NO;
   }
   
   return self;  
@@ -564,10 +568,21 @@ static NSOperationQueue *_sharedNetworkQueue;
  }*/
 
 -(BOOL) isCacheEnabled {
-  
+  /* existence of directory does not mean caching is enabled
   BOOL isDir = NO;
   BOOL isCachingEnabled = [[NSFileManager defaultManager] fileExistsAtPath:[self cacheDirectoryName] isDirectory:&isDir];
   return isCachingEnabled;
+  */
+  return self.cacheEnabled;
+}
+
+- (void)setCacheEnabled:(BOOL)enableCache {
+    if(enableCache != cacheEnabled_) {
+        if(enableCache)
+            [self useCache];
+        else
+            [self stopUsingCache];
+    }
 }
 
 -(void) useCache {
@@ -619,8 +634,16 @@ static NSOperationQueue *_sharedNetworkQueue;
                                              object:nil];
   
 #endif
-  
-  
+    
+    cacheEnabled_ = YES; 
+}
+
+- (void)stopUsingCache {
+    [self emptyCache]; 
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:UIApplicationDidReceiveMemoryWarningNotification object:nil]; 
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:UIApplicationDidEnterBackgroundNotification object:nil];
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:UIApplicationWillTerminateNotification object:nil];
+    cacheEnabled_ = NO; 
 }
 
 -(void) emptyCache {
