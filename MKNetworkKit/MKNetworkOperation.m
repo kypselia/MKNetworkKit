@@ -71,10 +71,6 @@
 
 @property (strong, nonatomic) NSError *error;
 
-- (id)initWithURLString:(NSString *)aURLString
-                 params:(NSMutableDictionary *)body
-             httpMethod:(NSString *)method;
-
 -(NSData*) bodyData;
 
 -(NSString*) encodedPostDataString;
@@ -536,7 +532,7 @@
 }
 
 - (id)initWithURLString:(NSString *)aURLString
-                 params:(NSMutableDictionary *)params
+                 params:(NSDictionary *)params
              httpMethod:(NSString *)method
 
 {	
@@ -558,7 +554,7 @@
     NSURL *finalURL = nil;
     
     if(params)
-      self.fieldsToBePosted = params;
+      self.fieldsToBePosted = [params mutableCopy];
     
     self.stringEncoding = NSUTF8StringEncoding; // use a delegate to get these values later
     
