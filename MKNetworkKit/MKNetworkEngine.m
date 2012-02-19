@@ -119,6 +119,7 @@ static NSOperationQueue *_sharedNetworkQueue;
       [self.reachability startNotifier];            
     }
     
+    /*
     if([headers objectForKey:@"User-Agent"] == nil) {
       
       NSMutableDictionary *newHeadersDict = [headers mutableCopy];
@@ -128,8 +129,11 @@ static NSOperationQueue *_sharedNetworkQueue;
       [newHeadersDict setObject:userAgentString forKey:@"User-Agent"];
       self.customHeaders = newHeadersDict;
     } else {
+      */
       self.customHeaders = headers;
+      /*
     }    
+    */
     
     self.customOperationSubclass = [MKNetworkOperation class];
 

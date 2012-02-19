@@ -827,6 +827,13 @@
       
       [self.request setHTTPBody:[self bodyData]];
     }
+
+    if([self.request valueForHTTPHeaderField:@"User-Agent"] == nil) {
+      NSString *userAgentString = [NSString stringWithFormat:@"%@/%@",
+                                   [[[NSBundle mainBundle] infoDictionary] objectForKey:(NSString *)kCFBundleNameKey],
+                                   [[[NSBundle mainBundle] infoDictionary] objectForKey:(NSString *)kCFBundleVersionKey]];
+      [self.request addValue:userAgentString forHTTPHeaderField:@"User-Agent"];
+    }
     
     dispatch_async(dispatch_get_main_queue(), ^{
       self.connection = [[NSURLConnection alloc] initWithRequest:self.request 
