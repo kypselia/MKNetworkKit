@@ -320,7 +320,7 @@
  *  @discussion
  *	Setting cacheEnabled to YES has the same effect as calling useCache. Defaults to NO.
  */
-@property(nonatomic, assign) BOOL cacheEnabled;
+@property(nonatomic, assign, getter=isCacheEnabled) BOOL cacheEnabled;
 
 /*!
  *  @abstract Checks current reachable status

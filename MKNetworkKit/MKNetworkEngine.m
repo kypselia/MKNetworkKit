@@ -577,7 +577,7 @@ static NSOperationQueue *_sharedNetworkQueue;
   BOOL isCachingEnabled = [[NSFileManager defaultManager] fileExistsAtPath:[self cacheDirectoryName] isDirectory:&isDir];
   return isCachingEnabled;
   */
-  return self.cacheEnabled;
+  return cacheEnabled_;
 }
 
 - (void)setCacheEnabled:(BOOL)enableCache {
