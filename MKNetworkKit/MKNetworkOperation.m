@@ -673,8 +673,10 @@
 }
 
 -(void) addData:(NSData*) data forKey:(NSString*) key mimeType:(NSString*) mimeType fileName:(NSString*) fileName {
-  
-  [self.request setHTTPMethod:@"POST"];
+
+  if ([self.request.HTTPMethod isEqualToString:@"GET"]) {
+      [self.request setHTTPMethod:@"POST"];
+  }
   
   NSDictionary *dict = [NSDictionary dictionaryWithObjectsAndKeys:
                         data, @"data",
@@ -693,7 +695,9 @@
 
 -(void) addFile:(NSString*) filePath forKey:(NSString*) key mimeType:(NSString*) mimeType {
   
-  [self.request setHTTPMethod:@"POST"];
+  if ([self.request.HTTPMethod isEqualToString:@"GET"]) {
+      [self.request setHTTPMethod:@"POST"];
+  }
   
   NSDictionary *dict = [NSDictionary dictionaryWithObjectsAndKeys:
                         filePath, @"filepath",
@@ -756,7 +760,7 @@
   }];
   
   if (postLength >= 1)
-    [self.request setValue:[NSString stringWithFormat:@"%lu", postLength] forHTTPHeaderField:@"content-length"];
+    [self.request setValue:[NSString stringWithFormat:@"%u", postLength] forHTTPHeaderField:@"content-length"];
   
   [body appendData: [[NSString stringWithFormat:@"--%@--\r\n", boundary] dataUsingEncoding:self.stringEncoding]];
   
